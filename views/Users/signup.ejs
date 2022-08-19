@@ -1,0 +1,121 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <h1>SIGNUP</h1>
+
+            <div class="col-md-8 pt-5 mt-5">
+                <form id="signup" enctype="multipart/form-data">
+                    <div class="form-group">
+
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" aria-describedby="emailHelp"
+                            placeholder="Enter Name" name="name" required />
+
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                            placeholder="Enter email" name="email" required />
+
+                        <label for="mobile">Mobile</label>
+                        <input type="number" class="form-control" id="mobile" aria-describedby="emailHelp"
+                            placeholder="Enter mobile" name="mobile" required />
+
+
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" aria-describedby="emailHelp"
+                            placeholder="Enter address" name="address" required />
+
+                        <label for="image">Image</label>
+                        <input type="file" class="form-control" id="image" aria-describedby="emailHelp" name="image"
+                            required />
+
+                        <label for="Gender">Gender</label>
+                        <select name="gender" class="form-control" id="gender">
+                            <option value="female">female</option>
+                            <option value="male">male</option>
+                        </select>
+
+                        <label for="dob">DOB</label>
+                        <input type="date" class="form-control" id="date" aria-describedby="emailHelp"
+                            placeholder="Enter Date Of Birth" name="dob" required />
+
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password" name="password"
+                            required />
+
+                        <label for="user">user</label>
+                        <select name="user" class="form-control" id="user">
+                            <option value="manager">manager</option>
+                            <option value="developer">developer</option>
+
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-2" id="btn">Signup</button>
+
+                    <a href="http://localhost:5000/login" class="btn btn-primary mt-2">
+                        Login
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+
+    btn.addEventListener("click", (e) => {
+        e.preventDefault()
+        let name = document.getElementById("name").value
+        let mobile = document.getElementById("mobile").value
+        let mail = document.getElementById("email").value
+        let password = document.getElementById("password").value
+        let dob = document.getElementById("date").value
+        let address = document.getElementById("address").value
+        let image = document.getElementById("image").value
+        let gender = document.getElementById("gender").value
+        let user = document.getElementById("user").value
+        let btn = document.getElementById("btn")
+        function isInTheFuture(date) {
+            const today = new Date();
+            return date > today;
+        }
+        let check = !isInTheFuture(new Date(dob))
+
+
+        
+        let pattern = /^[A-Za-z0-9]+$/;
+
+        
+        let result = pattern.test(password)
+        console.log(result);
+        if (name != "" && mail != "" && password != "" && dob != "" && address != "" && image != "" && gender != "" && user != "" && mobile.length != 10 && check && password && result) {
+            const today = new Date();
+            var ff = document.querySelector("#signup")
+            var data = new FormData(ff)
+            $.ajax({
+                url: "/signup",
+                data,
+                method: "post",
+                success: (cb) => {
+                    console.log(cb);
+                    if (cb) {
+                        alert(cb.msg)
+                        if (cb.err)
+                            location.reload()
+                        else {
+                            window.location.href = "http://localhost:5000/home";
+                        }
+                    }
+                    else {
+                        alert("error occured while signup")
+                    }
+                },
+                processData: false,
+                contentType: false
+            })
+        }
+        else {
+            alert("invalid input")
+        }
+    })
+
+</script>
